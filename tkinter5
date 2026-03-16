@@ -1,0 +1,34 @@
+import tkinter as tk
+from tkinter import ttk
+
+def klik():
+    wynik["text"] = imie.get() + " " + email.get() + " " + zajecia.get() + " " + godziny.get() + " " + poziom.get()
+
+okno = tk.Tk()
+okno.title("Zajęcia w FitKlub")
+okno.geometry("600x700")
+okno.configure(bg="#40E0D0")
+
+tk.Label(okno, text="Zajęcia w FitKlub", font=("Times New Roman",20,"bold"), fg="green", bg="#40E0D0").pack(pady=10)
+
+img = tk.PhotoImage(file="fit.png")
+tk.Label(okno, image=img, bg="#40E0D0", height="200px", width="300px").pack()
+
+imie = tk.Entry(okno); 
+tk.Label(okno, text="Imię i nazwisko", bg="#40E0D0").pack(); imie.pack()
+email = tk.Entry(okno); 
+tk.Label(okno, text="Email", bg="#40E0D0").pack(); email.pack()
+zajecia = ttk.Combobox(okno, values=["pilates","salsa","zumba","aerobic"]); 
+tk.Label(okno, text="Zajęcia", bg="#40E0D0").pack(); zajecia.pack()
+godziny = tk.Spinbox(okno, from_=1, to=20); 
+tk.Label(okno, text="Godziny/miesiąc", bg="#40E0D0").pack(); godziny.pack()
+
+poziom = tk.StringVar()
+tk.Radiobutton(okno, text="początkujący", variable=poziom, value="początkujący", bg="#40E0D0").pack()
+tk.Radiobutton(okno, text="średniozaawansowany", variable=poziom, value="średniozaawansowany", bg="#40E0D0").pack()
+tk.Radiobutton(okno, text="zaawansowany", variable=poziom, value="zaawansowany", bg="#40E0D0").pack()
+
+tk.Button(okno, text="Zatwierdź", bg="orange", command=klik).pack(pady=10)
+wynik = tk.Label(okno, text="", bg="#40E0D0"); wynik.pack(side="bottom", pady=20)
+
+okno.mainloop()

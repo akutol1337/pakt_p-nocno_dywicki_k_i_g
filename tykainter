@@ -1,0 +1,136 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+import string
+
+
+def generuj_haslo():
+    try:
+        dlugosc = int(entry_dlugosc.get())
+    except:
+        messagebox.showerror("Błąd", "Podaj poprawną długość!")
+        return
+
+    znaki = ""
+
+    if var_male.get():
+        znaki += string.ascii_lowercase
+    if var_duze.get():
+        znaki += string.ascii_uppercase
+    if var_cyfry.get():
+        znaki += string.digits
+    if var_specjalne.get():
+        znaki += "!@#$%^&*()_+-="
+
+    if not znaki:
+        messagebox.showwarning("Błąd", "Wybierz przynajmniej jedną opcję!")
+        return
+
+    haslo = "".join(random.choice(znaki) for _ in range(dlugosc))
+    entry_haslo.delete(0, tk.END)
+    entry_haslo.insert(0, haslo)
+
+
+def zatwierdz():
+    imie = entry_imie.get()
+    nazwisko = entry_nazwisko.get()
+    stanowisko = var_stanowisko.get()
+    haslo = entry_haslo.get()
+
+    messagebox.showinfo(
+        "Dane pracownika",
+        f"Imię: {imie}\nNazwisko: {nazwisko}\nStanowisko: {stanowisko}\nHasło: {haslo}"
+    )
+
+
+
+root = tk.Tk()
+root.title("Dodaj pracownika")
+root.geometry("520x360")
+root.configure(bg="#a9bcd0")  
+
+
+frame_main = tk.Frame(root, bg="#a9bcd0", padx=10, pady=10)
+frame_main.pack(fill="both", expand=True)
+
+
+frame_dane = tk.LabelFrame(
+    frame_main,
+    text="Dane pracownika",
+    bg="#b8cbe0",
+    padx=10,
+    pady=10
+)
+frame_dane.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+
+tk.Label(frame_dane, text="Imię", bg="#b8cbe0").grid(row=0, column=0, sticky="w")
+entry_imie = tk.Entry(frame_dane)
+entry_imie.grid(row=0, column=1, pady=2)
+
+tk.Label(frame_dane, text="Nazwisko", bg="#b8cbe0").grid(row=1, column=0, sticky="w")
+entry_nazwisko = tk.Entry(frame_dane)
+entry_nazwisko.grid(row=1, column=1, pady=2)
+
+tk.Label(frame_dane, text="Stanowisko", bg="#b8cbe0").grid(row=2, column=0, sticky="w")
+var_stanowisko = tk.StringVar(value="Tester")
+option = tk.OptionMenu(
+    frame_dane,
+    var_stanowisko,
+    "Kierownik",
+    "Starszy programista",
+    "Młodszy programista",
+    "Tester"
+)
+option.grid(row=2, column=1, pady=2, sticky="ew")
+
+
+frame_haslo = tk.LabelFrame(
+    frame_main,
+    text="Generowanie hasła",
+    bg="#b8cbe0",
+    padx=10,
+    pady=10
+)
+frame_haslo.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
+
+tk.Label(frame_haslo, text="Ile znaków:", bg="#b8cbe0").grid(row=0, column=0, sticky="w")
+entry_dlugosc = tk.Entry(frame_haslo, width=10)
+entry_dlugosc.insert(0, "8")
+entry_dlugosc.grid(row=0, column=1)
+
+var_male = tk.BooleanVar(value=True)
+var_duze = tk.BooleanVar()
+var_cyfry = tk.BooleanVar()
+var_specjalne = tk.BooleanVar()
+
+tk.Checkbutton(frame_haslo, text="Małe litery", variable=var_male, bg="#b8cbe0").grid(row=1, column=0, sticky="w")
+tk.Checkbutton(frame_haslo, text="Duże litery", variable=var_duze, bg="#b8cbe0").grid(row=2, column=0, sticky="w")
+tk.Checkbutton(frame_haslo, text="Cyfry", variable=var_cyfry, bg="#b8cbe0").grid(row=3, column=0, sticky="w")
+tk.Checkbutton(frame_haslo, text="Znaki specjalne", variable=var_specjalne, bg="#b8cbe0").grid(row=4, column=0, sticky="w")
+
+btn_generuj = tk.Button(
+    frame_haslo,
+    text="Generuj hasło",
+    bg="#6d8eb3",
+    fg="white",
+    command=generuj_haslo
+)
+btn_generuj.grid(row=5, column=0, columnspan=2, pady=5)
+
+entry_haslo = tk.Entry(frame_haslo)
+entry_haslo.grid(row=6, column=0, columnspan=2, pady=5, sticky="ew")
+
+
+btn_zatwierdz = tk.Button(
+    root,
+    text="Zatwierdź",
+    bg="#4a6fa5",
+    fg="white",
+    padx=20,
+    pady=5,
+    command=zatwierdz
+)
+btn_zatwierdz.pack(pady=10)
+
+
+root.mainloop()

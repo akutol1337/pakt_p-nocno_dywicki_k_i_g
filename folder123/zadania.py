@@ -1,0 +1,191 @@
+#Po dwa zadania z polimorfizmu (duck typing oraz interfejs), hermetyzacji i obsługi wyjątków. Polecenia i implementacja w Pythonie.
+'''
+#duck typing
+class Cat:
+    def __init__(self, name):
+        self.name = name
+
+    def make_sound(self):
+        print('kot robi miau miau')
+
+    def run(self):
+        print('kot biega')
+
+    def fly(self):
+        print('kot nie lata')
+
+class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def make_sound(self):
+        print('pies robi hau hau')
+
+    def run(self):
+        print('pies biega')
+
+    def fly(self):
+        print('pies nie lata')
+
+class Bird:
+    def __init__(self, name):
+        self.name = name
+
+    def make_sound(self):
+        print('Ptak robi ćwir ćwir')
+
+    def run(self):
+        print('ptak biega')
+
+    def fly(self):
+        print('ptak lata')
+
+cat = Cat('kot')
+dog = Dog('pies')
+bird = Bird('ptak')
+
+cat.make_sound()
+dog.make_sound()
+bird.make_sound()
+
+cat.run()
+dog.run()
+bird.run()
+
+cat.fly()
+dog.fly()
+bird.fly()
+
+#interfejsy
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def make_sound(self):
+        print('zwierzę robi dzwięk')
+
+    def run(self):
+        print('zwierzę biega')
+
+    def fly(self):
+        print('zwierzę lata')
+
+    def swim(self):
+        print('zwierzę pływa')
+
+class Fish(Animal):
+    def __init__(self, name):
+        super().__init__(name)
+    
+    def make_sound(self):
+        print('ryba robi bul bul')
+
+    def run(self):
+        print('ryba nie biega')
+
+    def fly(self):
+        print('ryba nie lata')
+
+    def swim(self):
+        print('ryba pływa')
+
+class Lizard(Animal):
+    def __init__(self, name):
+        super().__init__(name)
+    
+    def make_sound(self):
+        print('jaszczurka robi ssssss')
+
+    def run(self):
+        print('jaszczurka biega')
+
+    def fly(self):
+        print('jaszczurka nie lata')
+
+    def swim(self):
+        print('jaszczurka pływa')
+
+fish = Fish('ryba')
+lizard = Lizard('jaszczurka')
+
+fish.make_sound()
+lizard.make_sound()
+
+fish.run()
+lizard.run()
+
+fish.fly()
+lizard.fly()
+
+fish.swim()
+lizard.swim()
+'''
+#hermetyzacja
+class Shop:
+    def __init__(self, name, product, product_weight, money):
+        self.name = name
+        self.product = [product]
+        self.product_weight = [product_weight]
+        self.__money = money
+
+    @property
+    def money(self):
+        return self.__money
+    
+    @money.setter
+    def money(self, value):
+        self.__money = value
+
+    def buy_product(self, product, product_weight, price, quantity):
+        for each in range(quantity):
+            if (self.money >= price):
+                print(self.name, 'kupuje', product, 'za', price, 'zł.')
+                self.product += [product]
+                self.product_weight += [product_weight]
+                self.money -= price
+        print("")
+
+    def sell_product(self, product, price, quantity):
+        for each in range(quantity):
+            i = 0
+            for each in self.product:
+                if each == product:
+                    print(self.name, 'sprzedaje', product, 'za', price, 'zł.')
+                    self.product.pop(i)
+                    self.product_weight.pop(i)
+                    self. money += price
+                i += 1
+        print("")
+
+    def show_products(self):
+        print('Oto produkty sklepu:')
+        i = 0
+        for each in self.product:
+            if (i<=len(self.product)-2):
+                print(each, str(self.product_weight[i])+'kg,')
+            else:
+                print(each, str(self.product_weight[i])+'kg')
+            i += 1
+
+    def show_money(self):
+        print(self.name, 'ma:', round(self.money,2), 'zł.')
+
+    def show_info(self):
+        self.show_products()
+        self.show_money()
+        print("")
+
+biedronka = Shop('biedronka', 'pomidor', 0.2, 1000)
+biedronka.show_info()
+biedronka.buy_product('pomidor', 0.2, 0.3, 3)
+biedronka.buy_product('ogórek', 0.2, 0.3, 2)
+biedronka.show_info()
+biedronka.sell_product('pomidor', 1.6, 2)
+biedronka.show_info()
+lidl = Shop('lidl', 'pomidor', 0.2, 1000)
+lidl.show_info()
+lidl.buy_product('pomidor', 0.2, 0.3, 3)
+lidl.buy_product('ogórek', 0.2, 0.3, 2)
+lidl.show_info()
+lidl.sell_product('pomidor', 1.2, 2)
+lidl.show_info()
